@@ -1,6 +1,7 @@
 'use strict';
 
 // load modules
+const cors = require('cors');
 const express = require('express');
 const morgan = require('morgan');
 const indexRouter = require('./routes/index');
@@ -14,6 +15,9 @@ const { sequelize } = require('./models');
 
 // create the Express app
 const app = express();
+
+// Enable All CORS Requests
+app.use(cors());
 
 // Expecting requests coming in as JSON
 app.use(express.json());
