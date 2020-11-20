@@ -4,15 +4,18 @@ import './App.css';
 
 import Header from './components/Header';
 import Courses from './components/Courses';
+import CourseDetail from './components/CourseDetail';
 
 function App() { 
   return (
     <BrowserRouter>
-      <Header />
-      <Switch>
-        <Route exact path={'/'} render={() => <Courses />} />
-      </Switch>
-      
+      <div>
+        <Header />
+        <Switch>
+          <Route exact path={'/'} render={() => <Courses />} />
+          <Route path={'/courses/:id'} render={() => <CourseDetail />} />
+        </Switch>
+      </div>
     </BrowserRouter>    
   );
 

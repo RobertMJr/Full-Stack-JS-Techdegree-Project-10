@@ -10,7 +10,6 @@ const Courses = () => {
       fetch('http://localhost:5000/api/courses')
       .then(response => response.json())
       .then(data => setData(data))
-      .then(console.log(data))
       .finally(() => setIsLoading(false))
     }, []);
 
@@ -21,8 +20,8 @@ const Courses = () => {
                 ?<p>Loading...</p>
                 : data.map( dat => {
                     return(
-                        <div className="grid-33">
-                            <NavLink className="course--module course--link" to="/courses/:id">
+                        <div className="grid-33" key={dat.id}>
+                            <NavLink className="course--module course--link" to={"/courses/" + dat.id}>
                                 <h4 className="course--label">Course</h4>
                                 <h3 className="course--title">{dat.title}</h3>
                             </NavLink>
