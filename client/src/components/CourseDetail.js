@@ -41,7 +41,36 @@ const CourseDetail = () => {
                             <p>By {data.User.firstName } {data.User.lastName}</p>
                         </div>
                         <div className="course--description">
-                            <p>{data.description}</p>
+                            {data.description.split('\n').map(descParagraph => {
+                                return(
+                                    <p>{descParagraph}</p>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    <div className="grid-25 grid-right">
+                        <div className="course--stats">
+                            <ul className="course--stats--list">
+                                <li className="course--stats--list--item">
+                                    <h4>Estimated Time</h4>
+                                    <h3>{data.estimatedTime}</h3>
+                                </li>
+                                <li className="course--stats--list--item">
+                                    <h4>Materials Needed</h4>
+                                    <ul>
+                                        {   data.materialsNeeded
+                                            ? data.materialsNeeded.split('*').map(item => {
+                                                if (item !== '') {
+                                                    return(
+                                                        <li>{item}</li>
+                                                    )
+                                                }
+                                            })
+                                            : <li>No Materials</li>
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                   </div>

@@ -66,7 +66,9 @@ module.exports = (sequelize, DataTypes) => {
                 notNull: {
                     msg: 'A password is required.'
                 },
-                notEmpty: 'Please provide a password.'
+                notEmpty: {
+                    msg: 'Please provide a password.'
+                }
             },
         }, 
     }, { sequelize, modelName: 'User' });
