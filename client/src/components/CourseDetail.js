@@ -13,7 +13,7 @@ const CourseDetail = () => {
         fetch('http://localhost:5000/api/courses/' + id)
         .then(response => response.json())
         .then(data => setData(data))
-        .catch(err => console.log('Oh no!', err))
+        .catch(err => console.log('Oh no!', err)) // WIP - needs to route to Not Found...etc
         .finally(() => setLoading(false))
     }, []);
 
@@ -41,9 +41,9 @@ const CourseDetail = () => {
                             <p>By {data.User.firstName } {data.User.lastName}</p>
                         </div>
                         <div className="course--description">
-                            {data.description.split('\n').map(descParagraph => {
+                            {data.description.split('\n').map((descParagraph, index) => {
                                 return(
-                                    <p>{descParagraph}</p>
+                                    <p key={index}>{descParagraph}</p>
                                 )
                             })}
                         </div>
@@ -59,11 +59,16 @@ const CourseDetail = () => {
                                     <h4>Materials Needed</h4>
                                     <ul>
                                         {   data.materialsNeeded
-                                            ? data.materialsNeeded.split('*').map(item => {
+                                            ? data.materialsNeeded.split('*').map((item, index) => {
                                                 if (item !== '') {
-                                                    return(
-                                                        <li>{item}</li>
+                                                    return (
+                                                        <li key={index}>
+                                                            {item}
+                                                        </li>
                                                     )
+                                                }
+                                                else {
+                                                    return null
                                                 }
                                             })
                                             : <li>No Materials</li>

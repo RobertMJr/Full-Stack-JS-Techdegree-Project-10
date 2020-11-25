@@ -10,20 +10,28 @@ export class Provider extends Component {
         this.data = new Data();
     }
 
+    state= {
+        authenticatedUser: null
+    };
+
 
     render() {
 
+        const { authenticatedUser } = this.state;
+
         // Provide the utility methods of the Data class 
         const value = {
+            authenticatedUser,
             data: this.data,
             // Pass the Provider's value prop an actions object to store any event handlers/actions to be performed on data that is passed down through context
             actions: {
                 signIn: this.signIn,
+                signOut: this.signOut,
             }
         };
 
         return(
-            // value is an object containg the context to be shared throughout the component tree
+            // value is the object containg the context to be shared throughout the component tree
             <Context.Provider value={value}>
                 {this.props.children}
             </Context.Provider>
@@ -36,13 +44,20 @@ export class Provider extends Component {
          * //The returned promise of below user variable will be an object like:
          * { firstName: "John", lastName: "Doe", emailAddress: "john.doe@doe.com"}
          */
-        console.log(emailAddress.length);
         const user = await this.data.getUser(emailAddress, password); 
+        if (user !== null) {
+            user.password = password;
+            this.setState(() => {
+                return {
+                    authenticatedUser: user,
+                }
+            })
+        }
         return user;
     }
 
     signOut = async () => {
-
+        this.setState({ authenticatedUser: null });
     }
 }
 

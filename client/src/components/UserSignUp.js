@@ -147,14 +147,17 @@ export default class UserSignUp extends Component {
                 });
             }
             else {
-                console.log(`${emailAddress} is successfully singed up and authenticated!`);
+                // Sign the user in and navigate him to the main page
+                context.actions.signIn(emailAddress, password)
+                .then(() => {
+                    this.props.history.push('/');
+                })
             }
         })
         .catch( err => {
             console.log(err);
             this.props.history.push('/error');
         })
-
 
     }
 
