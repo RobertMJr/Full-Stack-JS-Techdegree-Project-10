@@ -13,6 +13,7 @@ router.get('/', authenticateUser, asyncHandler(async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.emailAddress,
+        id: user.id,
     });
 }));
 

@@ -81,8 +81,9 @@ export default class UserSignIn extends Component {
                     return { errors: ['Sign-in was unsuccessful'] };
                 })
             } else {
+                // Redirect user after a successfull sing-in to the previous screen
                 this.props.history.push(from);
-                console.log(`Success ${emailAddress} is now signed in!`);
+                console.log(`Success ${emailAddress} is now signed in!`); // REMOVE ME
             }
         })
         .catch(err => {
