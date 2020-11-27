@@ -22,6 +22,10 @@ const UpdateCourse = (props) => {
     let { id }  = useParams();
     id = id[0];
 
+    const { context } = props;
+    const authUserId = context.authenticatedUser.id;
+    const {email, password} = context.authenticatedUser
+
     useEffect(() => {
 
         fetch('http://localhost:5000/api/courses/' + id)
@@ -33,20 +37,31 @@ const UpdateCourse = (props) => {
                 throw new Error(404);
             }
         })
-        .then(state => setState((prevState)=> ({
-            ...prevState,
-            title: state.title,
-            description: state.description,
-            estimatedTime: state.estimatedTime,
-            materialsNeeded: state.materialsNeeded,
-            firstName: state.User.firstName,
-            lastName: state.User.lastName,
-        })))
+        .then(state => {
+            // Check if the authenticated user is the owner of the course.
+            // If he is not throw an error that will redirect him to the 'forbiddent' path otherwise proceed with the rest of the actions
+            if(authUserId !== state.userId) {
+                throw new Error('forbidden');
+            }
+            else {
+                setState((prevState)=> ({
+                    ...prevState,
+                    title: state.title,
+                    description: state.description,
+                    estimatedTime: state.estimatedTime,
+                    materialsNeeded: state.materialsNeeded,
+                    firstName: state.User.firstName,
+                    lastName: state.User.lastName,
+                    ownerId: state.userId,
+                }))
+            }
+        })
         .then(() => setLoading(false))
         .catch(err => {
-            // console.log(err.message === '404');
             if (err.message === '404' ) {
                 history.push('/notfound');
+            } else if (err.message === 'forbidden') {
+                history.push('/forbidden');
             }
             else {
                 history.push('/error');   
@@ -54,7 +69,7 @@ const UpdateCourse = (props) => {
         })
         
 
-    }, [id, history]);
+    }, [id, history, authUserId]);
 
     const { 
         title,
@@ -83,39 +98,36 @@ const UpdateCourse = (props) => {
 
     const submit = () => {
 
-        const { context } = props;
-        const userId = context.authenticatedUser.id;
-        const {email, password} = context.authenticatedUser
-
         const {
             title,
             description,
             estimatedTime,
-            materialsNeeded
+            materialsNeeded,
         } = state;
 
         const course = {
-            userId,
+            title,
+            description,
+            authUserId,
             estimatedTime,
             materialsNeeded,
         };
 
-        // If title is not an empty string, add it to the course object otherwise use the already existing title of the course
-        if (title) {
-            course.title = title;
-        }
-        // If description is not an empty string, add it to the course object otherwise use the already existing title of the course
-        if(description) {
-            course.description = description;
-        }
-
-
+        /**
+         * Call the updateCourse method from Data.js via context
+         * Pass it the required details (course object, the user's credentials and the id of the course)
+         * updateCourse sends a PUT request with the details and if no errors occur the API updates the course
+         */
         context.data.updateCourse(course, email, password, id)
         .then((errors) => {
             if(errors.length) {
-                setState({errors});
+                setState(prevState => ({
+                    ...prevState,
+                    errors,
+                }));
             }
             else {
+                console.log(state);
                 console.log(`Course updated`);
                 history.push('/');
             }
@@ -124,7 +136,6 @@ const UpdateCourse = (props) => {
             console.log(err);
             history.push('/error');
         })
-
     }
 
     return(

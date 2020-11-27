@@ -10,8 +10,6 @@ const CourseDetail = (props) => {
     let { id }  = useParams();
     const history = useHistory();
 
-    
-
     useEffect(() => {
 
         fetch('http://localhost:5000/api/courses/' + id)
@@ -26,7 +24,6 @@ const CourseDetail = (props) => {
         .then(data => setData(data))
         .then(() => setLoading(false))
         .catch(err => {
-            // console.log(err.message === '404');
             if (err.message === '404' ) {
                 history.push('/notfound');
             }
@@ -78,11 +75,6 @@ const CourseDetail = (props) => {
                         </div>
                         <div className="course--description">
                             <ReactMarkdown source={data.description} />
-                            {/* {data.description.split('\n').map((descParagraph, index) => {
-                                return(
-                                    <p key={index}>{descParagraph}</p>
-                                )
-                            })} */}
                         </div>
                     </div>
                     <div className="grid-25 grid-right">
@@ -96,21 +88,6 @@ const CourseDetail = (props) => {
                                     <h4>Materials Needed</h4>
                                     <ul>
                                         <ReactMarkdown source={data.materialsNeeded} />
-                                        {/* {   data.materialsNeeded
-                                            ? data.materialsNeeded.split('*').map((item, index) => {
-                                                if (item !== '') {
-                                                    return (
-                                                        <li key={index}>
-                                                            {item}
-                                                        </li>
-                                                    )
-                                                }
-                                                else {
-                                                    return null
-                                                }
-                                            })
-                                            : <li>No Materials</li>
-                                        } */}
                                     </ul>
                                 </li>
                             </ul>

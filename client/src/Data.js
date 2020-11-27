@@ -84,5 +84,4 @@ export default class Data {
             throw new Error();
         }
     }
-
 }

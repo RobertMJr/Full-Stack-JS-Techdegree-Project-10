@@ -61,7 +61,7 @@ const CreateCourse = (props) => {
         /**
          * Call the createCourse method from Data.js via context
          * Pass it the required details
-         * createCourse sends a POST required with the details and if no errors occur the API creates the course
+         * createCourse sends a POST request with the details and if no errors occur the API creates the course
          */
         context.data.createCourse(course, email, password)
         .then((errors) => {
