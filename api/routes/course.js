@@ -54,6 +54,7 @@ router.post('/', authenticateUser, asyncHandler(async (req, res) => {
 router.put('/:id', authenticateUser, asyncHandler(async (req, res) => {
     const user = req.currentUser;
     let course = await Course.findByPk(req.params.id);
+    console.log(req.body);
     if(course && (user.id === course.userId)) {
         await course.update(req.body);
         res.status(204).end();

@@ -1,32 +1,68 @@
 
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+const ReactMarkdown = require('react-markdown');
 
-const CourseDetail = () => {
+const CourseDetail = (props) => {
     const [data, setData] = useState('');
     const [isLoading, setLoading] = useState(true);
     let { id }  = useParams();
+    const history = useHistory();
 
+    
 
     useEffect(() => {
+
         fetch('http://localhost:5000/api/courses/' + id)
-        .then(response => response.json())
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            else if (response.status === 404){
+                throw new Error(404);
+            }
+        })
         .then(data => setData(data))
-        .catch(err => console.log('Oh no!', err)) // WIP - needs to route to Not Found...etc
-        .finally(() => setLoading(false))
-    }, []);
+        .then(() => setLoading(false))
+        .catch(err => {
+            // console.log(err.message === '404');
+            if (err.message === '404' ) {
+                history.push('/notfound');
+            }
+            else {
+                history.push('/error');   
+            }
+        })
+        
+
+    }, [id, history]);
+
+    const { context } = props;
+    // To be used for checking if the authenticated user's id matches the id of the user who created / owns the course
+    let idMatch;
 
     return(
         <div>
             <div className="actions--bar">
                 <div className="bounds">
                     <div className="grid-100">
-                        <span>
-                            <Link className="button" to={"/courses/" + id + "/update"}>Update Course</Link>
-                            <Link className="button" to="#">Delete Course</Link>
-                        </span>
-                        <Link className="button button-secondary" to="/">Return to List</Link>
+                        {   
+                            // Set the value of idMatch if there is an authenticated user
+                            context.authenticatedUser
+                            ? idMatch = context.authenticatedUser.id === data.userId
+                            : idMatch = false
+                        }
+                        {
+                            // Render the 'Update Course' & 'Delete Course' buttons if there is an authenticated user and his ID matches that of the user who owns the course
+                            context.authenticatedUser && idMatch
+                            ? <span>
+                                <Link className="button" to={"/courses/" + id + "/update"}>Update Course</Link>
+                                <Link className="button" to="#">Delete Course</Link>
+                                <Link className="button button-secondary" to="/">Return to List</Link>
+                            </span>
+                            : <Link className="button button-secondary" to="/">Return to List</Link>
+                        }
                     </div>
                 </div>
             </div>
@@ -41,11 +77,12 @@ const CourseDetail = () => {
                             <p>By {data.User.firstName } {data.User.lastName}</p>
                         </div>
                         <div className="course--description">
-                            {data.description.split('\n').map((descParagraph, index) => {
+                            <ReactMarkdown source={data.description} />
+                            {/* {data.description.split('\n').map((descParagraph, index) => {
                                 return(
                                     <p key={index}>{descParagraph}</p>
                                 )
-                            })}
+                            })} */}
                         </div>
                     </div>
                     <div className="grid-25 grid-right">
@@ -58,7 +95,8 @@ const CourseDetail = () => {
                                 <li className="course--stats--list--item">
                                     <h4>Materials Needed</h4>
                                     <ul>
-                                        {   data.materialsNeeded
+                                        <ReactMarkdown source={data.materialsNeeded} />
+                                        {/* {   data.materialsNeeded
                                             ? data.materialsNeeded.split('*').map((item, index) => {
                                                 if (item !== '') {
                                                     return (
@@ -72,7 +110,7 @@ const CourseDetail = () => {
                                                 }
                                             })
                                             : <li>No Materials</li>
-                                        }
+                                        } */}
                                     </ul>
                                 </li>
                             </ul>

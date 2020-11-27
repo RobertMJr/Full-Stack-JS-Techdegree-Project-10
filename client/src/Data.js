@@ -68,4 +68,21 @@ export default class Data {
             throw new Error();
         }
     }
+
+    // Send a PUT request to the API with the body containing the course object, the credentials and the id of the course
+    async updateCourse(course, emailAddress, password, id) {
+        const response = await this.api(`/courses/${id}`, 'PUT', course, true, {emailAddress, password});
+        if(response.status === 204) {
+            return [];
+        }
+        else if (response.status === 400) {
+            return response.json().then(data => {
+                return data.errors;
+            })
+        }
+        else {
+            throw new Error();
+        }
+    }
+
 }

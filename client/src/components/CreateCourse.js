@@ -38,7 +38,7 @@ const CreateCourse = (props) => {
     const submit = () => {
 
         const { context } = props;
-        // Retrieve the required property userId from context to later pass it to the API
+        // Retrieve the required property userId from context to later pass it to the API in the course object
         const userId = context.authenticatedUser.id;
         // Retrieve the email and password properties from context via destructuring.
         const {email, password} = context.authenticatedUser;
@@ -69,12 +69,13 @@ const CreateCourse = (props) => {
                 setState({errors});
             }
             else {
-                console.log(`Course created`) // WIP
+                console.log(`Course created`);
+                history.push('/');
             }
         })
         .catch(err => {
             console.log(err);
-            this.props.history.push('/error');
+            history.push('/error');
         })
     }
 
