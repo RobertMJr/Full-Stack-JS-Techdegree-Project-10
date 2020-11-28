@@ -39,7 +39,7 @@ const UpdateCourse = (props) => {
         })
         .then(state => {
             // Check if the authenticated user is the owner of the course.
-            // If he is not throw an error that will redirect him to the 'forbiddent' path otherwise proceed with the rest of the actions
+            // If he is not throw an error that will redirect him to the 'forbidden' path otherwise proceed with the rest of the actions
             if(authUserId !== state.userId) {
                 throw new Error('forbidden');
             }
@@ -127,7 +127,6 @@ const UpdateCourse = (props) => {
                 }));
             }
             else {
-                console.log(state);
                 console.log(`Course updated`);
                 history.push('/');
             }

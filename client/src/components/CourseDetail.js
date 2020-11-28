@@ -36,8 +36,20 @@ const CourseDetail = (props) => {
     }, [id, history]);
 
     const { context } = props;
+    const {email, password} = context.authenticatedUser;
     // To be used for checking if the authenticated user's id matches the id of the user who created / owns the course
     let idMatch;
+
+    const deleteCourse = () => {
+        context.data.deleteCourse(email, password, id)
+        .then(response => {
+            console.log(response);
+            if(response) {
+                history.push('/');
+            }
+        })
+        .catch(errors => setData({errors}));
+    }
 
     return(
         <div>
@@ -55,7 +67,7 @@ const CourseDetail = (props) => {
                             context.authenticatedUser && idMatch
                             ? <span>
                                 <Link className="button" to={"/courses/" + id + "/update"}>Update Course</Link>
-                                <Link className="button" to="#">Delete Course</Link>
+                                <button className="button" onClick={deleteCourse}>Delete Course</button>
                                 <Link className="button button-secondary" to="/">Return to List</Link>
                             </span>
                             : <Link className="button button-secondary" to="/">Return to List</Link>
