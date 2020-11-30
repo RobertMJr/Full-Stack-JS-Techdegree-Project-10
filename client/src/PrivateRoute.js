@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import { Consumer } from './Context';
 
-// Destructure and rename the component prop, collect any other passed props in the ...rest variable
+// Destructure and rename the component prop, collect any other passed props in the '...rest' variable
 export default ({ component: Component, ...rest }) => {
     return (
         // Consumer component subscribes PrivateRoute to all actions and data provided by Context.js
