@@ -30,8 +30,7 @@ const CourseDetail = (props) => {
             else {
                 history.push('/error');   
             }
-        })  
-        
+        })
     }, [id, history]);
 
     const { context } = props;
