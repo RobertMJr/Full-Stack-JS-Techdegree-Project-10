@@ -1,18 +1,22 @@
 import React, { useEffect , useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const Courses = () => {
 
     const [data, setData] =  useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const history = useHistory();
     
     useEffect(()=> {
       fetch('http://localhost:5000/api/courses')
       .then(response => response.json())
       .then(data => setData(data))
-      .catch(err => console.log('Oh no!', err)) // WIP - needs to route to Not Found...etc
-      .finally(() => setIsLoading(false))
-    }, []);
+      .then(() => setIsLoading(false))
+      .catch(err => {
+        console.log('Oh no!', err);
+        history.push('/error');
+        })
+    }, [history]);
 
     return(
         <div className="bounds">
