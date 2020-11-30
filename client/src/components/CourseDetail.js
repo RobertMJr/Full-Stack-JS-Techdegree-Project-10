@@ -30,17 +30,17 @@ const CourseDetail = (props) => {
             else {
                 history.push('/error');   
             }
-        })
+        })  
         
-
     }, [id, history]);
 
     const { context } = props;
-    const {email, password} = context.authenticatedUser;
+    
     // To be used for checking if the authenticated user's id matches the id of the user who created / owns the course
     let idMatch;
 
     const deleteCourse = () => {
+        const {email, password} = context.authenticatedUser;
         context.data.deleteCourse(email, password, id)
         .then(response => {
             console.log(response);
