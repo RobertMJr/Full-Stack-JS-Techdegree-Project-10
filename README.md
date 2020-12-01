@@ -1,8 +1,8 @@
 
-# Full Stack JavaScript Techdegree - Full Stack App with React and a REST API.
+# Full Stack App with React and a REST API.
 ## A React client with a school database REST API.
 
-This fullstack application provides a way for users to administer a school database containing information about courses.   
+This full stack application provides a way for users to administer a school database containing information about courses.   
 Users can interact with the database by retrieving a list of courses, as well as adding, updating and deleting courses in the database.  
 They can only update and delete courses they own.
 Users have to create an account and sign-in to make changes to the database.
