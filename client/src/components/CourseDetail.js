@@ -20,6 +20,9 @@ const CourseDetail = (props) => {
             else if (response.status === 404){
                 throw new Error(404);
             }
+            else {
+                throw new Error('Internal Error');
+            }
         })
         .then(data => setData(data))
         .then(() => setLoading(false))
@@ -41,15 +44,11 @@ const CourseDetail = (props) => {
     const deleteCourse = () => {
         const {email, password} = context.authenticatedUser;
         context.data.deleteCourse(email, password, id)
-        .then(response => {
-            console.log(response);
-            if(response) {
-                history.push('/');
-            }
+        .then(() => {
+            history.push('/');
         })
-        .catch(errors => setData({errors}));
+        .catch(() => history.push('/error'));
     }
-
     return(
         <div>
             <div className="actions--bar">

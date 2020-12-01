@@ -9,7 +9,13 @@ const Courses = () => {
     
     useEffect(()=> {
       fetch('http://localhost:5000/api/courses')
-      .then(response => response.json())
+      .then(response => {
+            if(response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Internal Error');
+            }       
+        })
       .then(data => setData(data))
       .then(() => setIsLoading(false))
       .catch(err => {
