@@ -57,6 +57,7 @@ export default class UserSignIn extends Component {
         );
     }
 
+    // Update state based on the value of the input fields
     change = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -68,6 +69,7 @@ export default class UserSignIn extends Component {
         });
     }
 
+    // Handle form submit
     submit = () => {
         const { context } = this.props;
         // Access 'from' via this.props.location.state.from
@@ -83,7 +85,6 @@ export default class UserSignIn extends Component {
             } else {
                 // Redirect user after a successfull sing-in to the previous screen
                 this.props.history.push(from);
-                console.log(`Success ${emailAddress} is now signed in!`); // REMOVE ME
             }
         })
         .catch(err => {
@@ -92,6 +93,8 @@ export default class UserSignIn extends Component {
         })
     }
 
+
+    // Route user back to the main page
     cancel = () => {
         this.props.history.push('/');
     }

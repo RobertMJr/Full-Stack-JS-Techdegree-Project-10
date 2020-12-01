@@ -117,7 +117,7 @@ const CreateCourse = (props) => {
                                         onChange={change} //Call the change function
                                     />
                                 </div>
-                                <p>By {firstName} {lastName} </p> {/** WIP */}
+                                <p>By {firstName} {lastName} </p>
                             </div>
                             <div className="course--description">
                                 <div>
