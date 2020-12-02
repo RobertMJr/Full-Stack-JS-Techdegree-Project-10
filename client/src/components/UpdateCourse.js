@@ -20,7 +20,6 @@ const UpdateCourse = (props) => {
         }
     );
     let { id }  = useParams();
-    id = id[0];
 
     const { context } = props;
     const authUserId = context.authenticatedUser.id;
@@ -83,7 +82,7 @@ const UpdateCourse = (props) => {
 
     const cancel = () => {
         history.push({
-            pathname: "/",
+            pathname: `/courses/${id}`,
         });
     }
 
